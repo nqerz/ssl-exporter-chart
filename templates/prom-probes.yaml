@@ -1,0 +1,19 @@
+{{- if .Values.prometheusProbe.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: {{ include "ssl-exporter-chart.fullname" . }}
+  labels:
+    {{- include "ssl-exporter-chart.labels" . | nindent 4 }}
+    {{ .Values.prometheusProbe.selector.name }}: {{ .Values.prometheusProbe.selector.value }}
+spec:
+  prober:
+    url: {{ .Values.prometheusProbe.url }}
+  module: {{ .Values.prometheusProbe.module }}
+  interval: {{ .Values.prometheusProbe.interval }}
+  {{- with .Values.prometheusProbe.targets }}
+  targets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

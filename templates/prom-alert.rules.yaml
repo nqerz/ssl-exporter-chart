@@ -1,0 +1,15 @@
+{{- if .Values.prometheusRules.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "ssl-exporter-chart.fullname" . }}
+  labels:
+    {{- include "ssl-exporter-chart.labels" . | nindent 4 }}
+    {{ .Values.prometheusRules.selector.name }}: {{ .Values.prometheusRules.selector.value }}
+spec:
+  {{- with .Values.prometheusRules.groups }}
+  groups:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

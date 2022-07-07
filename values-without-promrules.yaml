@@ -1,0 +1,177 @@
+# Default values for ssl-exporter-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ribbybibby/ssl-exporter
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Prob --  prometheus-operator Probe which declaratively specifies how groups of ingresses or static targets
+prometheusProbe:
+  enabled: false
+  selector:
+    name: release
+    value: prometheus
+  url: ssl-exporter-ssl-exporter-chart.monitoring-demo.svc:9219
+  module: https
+  interval: 20s
+  targets:
+    staticConfig:
+      static:
+        - "https://www.baidu.com/"
+
+prometheusRules:
+  enabled: false
+  selector:
+    name: release
+    value: prometheus
+  groups:
+    - name: ssl_expiry.rules
+      rules:
+        - alert: SSLCertExpiringSoon
+          annotations:
+            description: |-
+              "TLS certificate will expire in {{ $value | humanizeDuration }} (instance {{ $labels.instance }})"
+            runbook_url: https://community.letsencrypt.org/t/renew-letsencrypt-certificate/34677
+            summary: cert expired date is less than 100 days
+          expr: sum(ssl_cert_not_after{issuer_cn!="GlobalSign Root CA"}-time()) by (instance,path) < 86400 * 100
+          for: 10m
+          labels:
+            severity: warning
+
+alertmanagerConfig:
+  enabled: false
+  route:
+    {}
+    # groupBy: ["job"]
+    # groupWait: 30s
+    # groupInterval: 5m
+    # repeatInterval: 12h
+    # receiver: "demo-example"
+  receivers:
+    []
+    # - name: "demo-example"
+    #   wechatConfigs:
+    #     - apiURL: "http://wechatserver:8080/"
+    #       corpID: "wechat-corpid"
+    #       apiSecret:
+    #         name: "wechat-config"
+    #         key: "apiSecret"
+
+args: []
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 9219
+  sessionAffinity: None
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+volumeMounts: []
+volumes: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+configMap:
+  enabled: true
+  data: |
+    modules:
+      https:
+        prober: https
+      https_insecure:
+        prober: https
+        tls_config:
+          insecure_skip_verify: true
+      https_timeout:
+        prober: https
+        timeout: 5s
+      https_renegotiation:
+        prober: https
+        tls_config:
+          renegotiation: freely
+
+# configMap:
+#   enabled: true
+#   data: |
+#     modules:
+#       https:
+#         prober: https
+#       https_insecure:
+#         prober: https
+#         tls_config:
+#           insecure_skip_verify: true
+#       https_proxy:
+#         prober: https
+#         https:
+#           proxy_url: "socks5://localhost:8123"
+#       https_timeout:
+#         prober: https
+#         timeout: 3s
+#       tcp:
+#         prober: tcp
+#       tcp_servername:
+#         prober: tcp
+#         tls_config:
+#           server_name: example.com
+#       tcp_client_auth:
+#         prober: tcp
+#         tls_config:
+#           ca_file: /etc/tls/ca.crt
+#           cert_file: /etc/tls/tls.crt
+#           key_file: /etc/tls/tls.key
+#       tcp_smtp_starttls:
+#         prober: tcp
+#         tcp:
+#           starttls: smtp
+#       file:
+#         prober: file
+#       kubernetes:
+#         prober: kubernetes
+#       kubernetes_kubeconfig:
+#         prober: kubernetes
+#         kubernetes:
+#           kubeconfig: /root/.kube/config
+#       kubeconfig:
+#         prober: kubeconfig

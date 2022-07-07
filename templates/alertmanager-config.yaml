@@ -1,0 +1,17 @@
+{{- if .Values.alertmanagerConfig.enabled }}
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: config-example
+  labels:
+    alertmanagerConfig: example
+spec:
+  {{- with .Values.alertmanagerConfig.route }}
+  route:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.alertmanagerConfig.receivers }}
+  receivers:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
