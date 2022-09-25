@@ -11,7 +11,7 @@ A Helm chart for Kubernetes
 | affinity | object | `{}` |  |
 | alertmanagerConfig | object | `{"enabled":false,"receivers":[],"route":{}}` | prometheus-operator which declaratively specifies subsections of the Alertmanager configuration, allowing routing of alerts to custom receivers, and setting inhibit rules. |
 | args | list | `[]` |  |
-| configMap | object | `{"data":"modules:\n  https:\n    prober: https\n  https_insecure:\n    prober: https\n    tls_config:\n      insecure_skip_verify: true\n  https_timeout:\n    prober: https\n    timeout: 5s\n  https_renegotiation:\n    prober: https\n    tls_config:\n      renegotiation: freely\n","enabled":true}` | ssl-exporter configuration file, more <https://github.com/ribbybibby/ssl_exporter> |
+| configMap | object | `{"data":"modules:\n  https:\n    prober: https\n  https_insecure:\n    prober: https\n    tls_config:\n      insecure_skip_verify: true\n  https_timeout:\n    prober: https\n    timeout: 5s\n  https_renegotiation:\n    prober: https\n    tls_config:\n      renegotiation: freely\n","enabled":true}` | ssl-exporter configuration file, more https://github.com/ribbybibby/ssl_exporter |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"ribbybibby/ssl-exporter"` |  |
