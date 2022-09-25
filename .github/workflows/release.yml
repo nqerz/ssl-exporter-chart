@@ -4,7 +4,7 @@ on:
   push:
     branches:
       # - main
-      - feature/release-workflow
+      - gh-pages
 
 jobs:
   release:
