@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  grafana_dashboard: "1"
+
+configMapGenerator:
+  - name: ssl-exporter
+    files:
+      - ./ssl-exporter-dashboard.json
+
