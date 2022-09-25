@@ -5,7 +5,7 @@ image:
   repository: ribbybibby/ssl-exporter
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.4.1"
+  tag: "2.4.2"
 
 imagePullSecrets: []
 nameOverride: ""
