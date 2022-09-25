@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  ssl-exporter-chart:
+  - apiVersion: v2
+    appVersion: 2.4.2
+    created: "2022-09-25T09:28:52.546200521Z"
+    description: A Helm chart for Kubernetes
+    digest: 09fa107a1a4469a7a3d24a7815757e945549303862268f3a94e4e4b7fbb6616f
+    name: ssl-exporter-chart
+    type: application
+    urls:
+    - https://github.com/znqerz/ssl-exporter-chart/releases/download/ssl-exporter-chart-0.1.1/ssl-exporter-chart-0.1.1.tgz
+    version: 0.1.1
+generated: "2022-09-25T09:28:52.546206021Z"
