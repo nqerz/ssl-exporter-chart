@@ -22,3 +22,6 @@ kustomize-install: ## Install ssl-exporter with default values file
 
 kustomize-clean: ## Clean ssl-exporter with default values file
 	@cd kustomize && kubectl kustomize --enable-helm | kubectl apply -f -
+
+generate-docs: ## Generate helm docs
+	helm-docs -c $(ROOT_DIR)/charts/ssl-exporter-chart -d > $(ROOT_DIR)/docs/README.md

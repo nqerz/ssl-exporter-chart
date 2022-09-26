@@ -23,3 +23,5 @@
 .vscode/
 .github
 kustomize/
+scripts/
+Makefile
