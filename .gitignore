@@ -3,4 +3,5 @@
 .idea
 
 all.yaml
-kustomization.yaml
+kustomize/charts/*
+
